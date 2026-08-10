@@ -22,7 +22,6 @@ enum {
 
 #define CODEX_VID 0x303A
 #define CODEX_PID 0x8360
-#define CODEX_REPORT_DESCRIPTOR_SIZE 23
 #define EPNUM_AUDIO_OUT 0x01
 #define EPNUM_AUDIO_IN 0x82
 #define EPNUM_AUDIO_FB 0x81
@@ -57,18 +56,16 @@ uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance)
 {
     (void)instance;
     const codex_transport_profile_t *profile = codex_control_transport_profile();
-    return profile->report_map_size == CODEX_REPORT_DESCRIPTOR_SIZE
-               ? profile->report_map
-               : NULL;
+    return profile->report_map;
 }
 
-static const uint8_t desc_configuration[] = {
+static uint8_t desc_configuration[] = {
     TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, 0x00, 100),
     TUD_AUDIO_DESCRIPTOR(ITF_NUM_AUDIO_CONTROL, STRID_MICROPHONE,
                          EPNUM_AUDIO_OUT, EPNUM_AUDIO_IN, EPNUM_AUDIO_FB),
     TUD_HID_INOUT_DESCRIPTOR(ITF_NUM_CODEX_HID, STRID_CODEX_HID,
                              HID_ITF_PROTOCOL_NONE,
-                             CODEX_REPORT_DESCRIPTOR_SIZE,
+                             0,
                              EPNUM_HID_OUT, EPNUM_HID_IN,
                              CFG_TUD_HID_EP_BUFSIZE, 4),
 };
@@ -76,6 +73,22 @@ static const uint8_t desc_configuration[] = {
 uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 {
     (void)index;
+    const codex_transport_profile_t *profile = codex_control_transport_profile();
+    if (profile->report_map == NULL || profile->report_map_size == 0 ||
+        profile->report_map_size > UINT16_MAX) {
+        return NULL;
+    }
+
+    // TUD_HID_INOUT_DESCRIPTOR starts with a standard interface descriptor,
+    // followed by the HID descriptor. Patch wDescriptorLength from the shared
+    // transport profile so the USB descriptor cannot drift from the report map.
+    const size_t hid_descriptor_offset =
+        TUD_CONFIG_DESC_LEN + TUD_AUDIO_DEVICE_DESC_LEN + sizeof(tusb_desc_interface_t);
+    const size_t report_length_offset = hid_descriptor_offset + 7;
+    desc_configuration[report_length_offset] =
+        (uint8_t)(profile->report_map_size & 0xff);
+    desc_configuration[report_length_offset + 1] =
+        (uint8_t)(profile->report_map_size >> 8);
     return desc_configuration;
 }
 
