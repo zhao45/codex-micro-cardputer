@@ -2,38 +2,103 @@
 
 [English](README.md) | 繁體中文
 
-這是以 **M5Stack Cardputer ADV（StampS3A／ESP32-S3）**為目標的非官方
-Codex Micro 相容控制器韌體，使用 ESP-IDF 開發並以 Windows 11 為驗收平台。
+將 **M5Stack Cardputer ADV** 變成 Windows 11 的 Codex 控制器與 USB
+麥克風。可使用 USB 或 BLE 傳送 Codex 按鍵；USB 連接時也能使用 Cardputer
+內建麥克風，不需要安裝自訂驅動程式。
 
-Cardputer 鍵盤可以透過 USB 或低功耗藍牙（BLE）控制 Codex；內建麥克風
-會成為標準 Windows USB Audio Class 輸入裝置，不需要安裝自訂驅動程式。
-
-> 本專案是獨立的相容性實作，與 OpenAI、Work Louder、M5Stack 無隸屬或
-> 授權關係。第三方來源與授權請參閱 [NOTICE.md](NOTICE.md)。
+> 僅支援 Cardputer **ADV（StampS3A／ESP32-S3）**，不支援原版 Cardputer。
 
 ## 功能
 
-- USB 複合裝置：Codex 相容 Vendor HID＋UAC 2.0 麥克風。
-- USB Codex 控制成功時優先使用 USB，BLE 保留為自動備援。
-- Cardputer ADV ES8311 內建麥克風：單聲道、16 kHz、16-bit PCM。
-- TCA8418 鍵盤與正確的 Push-to-Talk 按下／放開事件。
-- ST7789 240x135 LCD 狀態頁與按鍵說明頁。
-- Agent 1～6 選擇與主機狀態顯示。
-- 電池 ADC 多次取樣、離群值排除、時間平滑與百分比遲滯。
-- 不提供 USB speaker、錄音儲存、Wi-Fi 或音訊播放。
+- USB：Codex 按鍵控制＋Cardputer ADV 內建麥克風。
+- BLE：Codex 按鍵控制，USB 無法使用時自動備援。
+- LCD：連線方式、Agent 1～6 狀態、按鍵說明與平滑化電池百分比。
+- 麥克風格式：單聲道、16 kHz、16-bit PCM。
+- 不包含 speaker、錄音儲存、Wi-Fi 或音訊播放。
 
-## 連線行為
+## 從 GitHub 下載並燒錄（Windows 11）
 
-| BLE | USB 資料連線 | 可用功能 |
+### 1. 安裝 ESP-IDF 5.5.2
+
+使用 Espressif 官方的
+[Windows 安裝說明](https://docs.espressif.com/projects/esp-idf/en/v5.5.2/esp32/get-started/index.html)，
+安裝 **ESP-IDF v5.5.2**。安裝完成後，從開始選單開啟
+`ESP-IDF 5.5 PowerShell`。
+
+### 2. 下載專案
+
+在 ESP-IDF PowerShell 執行：
+
+```powershell
+git clone https://github.com/zhao45/codex-micro-cardputer.git
+cd codex-micro-cardputer
+```
+
+不使用 Git 也可以從 GitHub 點選 **Code → Download ZIP**，解壓縮後進入：
+
+```powershell
+cd "$HOME\Downloads\codex-micro-cardputer-main"
+```
+
+如果解壓縮位置不同，請改成實際資料夾路徑。
+
+### 3. 編譯
+
+```powershell
+idf.py build
+```
+
+第一次編譯需要網路下載 ESP-IDF dependencies，完成後會產生：
+
+```text
+build/codex_micro_cardputer.bin
+```
+
+### 4. 讓 Cardputer 進入下載模式
+
+1. 使用可傳輸資料的 USB 線連接 Cardputer ADV。
+2. 按住 `G0`，再按一下 Reset；也可以按住 `G0` 時重新插入 USB。
+3. Windows 出現新的 COM 後放開 `G0`。
+4. 執行下列指令找出連接埠：
+
+```powershell
+Get-CimInstance Win32_SerialPort |
+  Select-Object DeviceID,Name,PNPDeviceID
+```
+
+請找名稱類似 `USB Serial Device (COM9)` 的裝置。每台電腦的 COM 編號可能
+不同。
+
+### 5. 燒錄
+
+將 `COM9` 換成剛才查到的連接埠：
+
+```powershell
+idf.py -p COM9 flash
+```
+
+看到 `Hash of data verified` 與 `Hard resetting via RTS pin` 表示燒錄成功。
+燒錄後請放開 `G0`，按一下 Reset；若仍停在下載模式，拔掉 USB 後在**不按
+G0** 的情況下重新插入。
+
+韌體正常啟動後，燒錄用的 COM 可能消失，因為 USB 已切換成 Codex HID＋
+麥克風複合裝置，這是正常現象。
+
+## 連線與使用
+
+| BLE | USB | 可用功能 |
 |---|---|---|
 | 有 | 有 | USB Codex 按鍵＋Cardputer 麥克風；BLE 備援 |
-| 有 | 無 | BLE Codex 按鍵；麥克風由 Windows／Codex 選擇 |
+| 有 | 無 | BLE Codex 按鍵；使用 Windows／Codex 選擇的麥克風 |
 | 無 | 有 | USB Codex 按鍵＋Cardputer 麥克風 |
-| 無 | 無 | LCD 本機頁面、按鍵說明與電池顯示 |
+| 無 | 無 | LCD 本機頁面與電池顯示 |
 
-USB 與 BLE 同時存在時，USB 必須先被 Codex 主機實際辨識才會接手。若
-USB HID 不被接受，原本已可用的 BLE 控制會維持啟用；同一個按鍵事件不會
-同時由兩種傳輸送出。
+使用 BLE 時，在 Windows「設定 → 藍牙與裝置」配對 `Codex Micro`。使用內建
+麥克風時，到「設定 → 系統 → 音效 → 輸入」選擇
+`Cardputer ADV Microphone`。
+
+USB 與 BLE 同時存在時會優先使用 USB；若 Codex 沒有接受 USB HID，BLE
+仍會保持可用。同一個按鍵不會同時從 USB 與 BLE 重複送出。
 
 ## 按鍵
 
@@ -46,138 +111,41 @@ USB HID 不被接受，原本已可用的 BLE 控制會維持啟用；同一個�
 | F | Fast |
 | Tab | Fork |
 | 1～6 | 選擇 Agent 1～6 |
-| Space | 切換 LCD 本機頁面，不會送給電腦 |
+| Space | 切換 LCD 本機頁面，不傳送給電腦 |
 
-LCD 主標題為 `CODEX MICRO`，右上角顯示硬體名稱 `CARDPUTER`。狀態列會
-顯示 `CTRL USB`、`CTRL BLE` 或 `CTRL NONE`。
+## 常見問題
 
-## 硬體目標
+### 找不到 COM
 
-| 功能 | 硬體／接腳 |
-|---|---|
-| MCU | StampS3A／ESP32-S3 |
-| LCD | ST7789，240x135 |
-| 鍵盤 | TCA8418；SDA GPIO8、SCL GPIO9、INT GPIO11 |
-| 麥克風 codec | ES8311 |
-| I2S 麥克風 | BCLK GPIO41、WS GPIO43、DIN GPIO46 |
-| 電池 ADC | GPIO10／ADC1 channel 9，2:1 分壓 |
+- 確認使用的是 USB 資料線，不是只能充電的線。
+- 重新執行「按住 G0 → Reset／插入 USB」。
+- 到 Windows 裝置管理員查看「連接埠（COM 和 LPT）」。
 
-本韌體只支援 Cardputer **ADV**，不是原版 Cardputer 的直接 GPIO 鍵盤矩陣。
+### 顯示 `Access denied` 或 COM 被占用
 
-## 專案結構
+關閉其他 serial monitor、ESP-IDF monitor 或使用該 COM 的程式後再燒錄。
 
-```text
-codex-micro-cardputer/
-|-- CMakeLists.txt
-|-- sdkconfig.defaults
-|-- dependencies.lock
-|-- main/                       # Cardputer app 與 USB adapter
-|-- components/
-|   |-- codex_control/
-|   |-- codex_transport_ble_espidf/
-|   |-- esp_hid/
-|   `-- usb_device_uac/
-|-- docs/CARDPUTER_PORT_SPEC.md
-|-- LICENSE
-`-- NOTICE.md
-```
+### 燒錄成功但畫面沒亮
 
-Cardputer app 只呼叫語意控制介面，不會自行建立 protocol JSON。既有 protocol
-module、BLE adapter 與新增的 USB adapter 維持分離。
+裝置通常仍停在 G0 download mode。放開 `G0`，按 Reset，或不按 G0 重新插入
+USB。
 
-## Windows 11 Build
+### Windows 找不到麥克風
 
-需求：ESP-IDF v5.5.2、USB 資料線與 M5Stack Cardputer ADV。
+重新插拔 USB，然後檢查「設定 → 系統 → 音效 → 輸入」。也可以執行：
 
 ```powershell
-cd "path\to\codex-micro-cardputer"
-. "C:\Users\YOUR_NAME\esp\v5.5.2\esp-idf\export.ps1"
-idf.py build
-```
-
-輸出檔案：
-
-```text
-build/codex_micro_cardputer.bin
-```
-
-## Flash
-
-應用程式啟動後，原生 USB 會切換成 HID/UAC 複合裝置，serial COM 通常會
-消失。再次燒錄前，請讓 Cardputer ADV 進入 `G0` ROM download mode，再找
-出新出現的 COM：
-
-```powershell
-Get-CimInstance Win32_SerialPort |
-  Select-Object DeviceID,Name,PNPDeviceID
-
-idf.py -p COM9 flash
-```
-
-請將 `COM9` 改成當次實際連接埠。
-
-## Monitor
-
-```powershell
-idf.py -p COM9 monitor
-```
-
-使用 `Ctrl+]` 離開。TinyUSB 接管原生 USB 後 monitor 可能中斷，這是預期
-行為。預期 ready log：
-
-```text
-CODEX_MICRO_CARDPUTER_READY USB_COMPOSITE_READY BLE_FALLBACK_READY
-```
-
-## Windows 驗收
-
-```powershell
-Get-PnpDevice -PresentOnly |
-  Where-Object InstanceId -match 'VID_303A&PID_8360' |
-  Format-Table Status,Class,FriendlyName,InstanceId -AutoSize
-
 Get-PnpDevice -PresentOnly -Class AudioEndpoint |
-  Where-Object FriendlyName -match 'Cardputer' |
-  Format-Table Status,FriendlyName,InstanceId -AutoSize
+  Where-Object FriendlyName -match 'Cardputer'
 ```
 
-1. 在「設定 → 系統 → 音效 → 輸入」選擇 `Cardputer ADV Microphone`。
-2. 關閉 BLE，確認只用 USB 仍能使用按鍵與麥克風。
-3. 同時連 BLE 與 USB，LCD 應顯示 `CTRL USB`，每個動作只觸發一次。
-4. 拔除 USB，LCD 應切換為 `CTRL BLE`，控制仍可繼續。
-5. 觀察電池至少一分鐘，不應在 90～100% 間快速跳動，也不會因 USB 插入
-   而直接假設是 100%。
+Windows／Codex 仍負責選擇實際使用的音訊輸入；韌體無法強制桌面程式切換
+麥克風。
 
-Windows／Codex 仍然負責選擇目前使用的麥克風；韌體無法強迫桌面程式切換
-音訊輸入。
+## 授權與來源
 
-## 已知限制
-
-- Codex Vendor HID protocol 未公開，未來主機版本可能改變。
-- BLE 使用無密碼的 Just Works bonding，請在可信任環境使用。
-- Cardputer ADV 沒有向目前韌體提供可靠充電狀態，因此不會把「有 USB」
-  直接顯示成「正在充電」。
-
-## 來源、授權與商標
-
-Cardputer app 重用了 MIT 授權的
-[shenjingnan/agentmote](https://github.com/shenjingnan/agentmote) 部分 module；
-原作者、介面與授權均保留。`components/usb_device_uac` 來自 Espressif
-`esp-iot-solution`，使用其內附的 Apache License 2.0。
-
-重新命名 Cardputer app 不代表移除或取代上游作者權利。完整說明請參閱
-[NOTICE.md](NOTICE.md) 與 [LICENSE](LICENSE)。
-
-## 上傳 GitHub
-
-先在 GitHub 建立空白 repository，名稱建議為 `codex-micro-cardputer`，再執行：
-
-```powershell
-git add .
-git commit -m "Initial Cardputer ADV release"
-git remote add origin https://github.com/YOUR_NAME/codex-micro-cardputer.git
-git push -u origin main
-```
-
-`.gitignore` 已排除 build、managed dependencies、sdkconfig、`.agents/` 與
-`.codex`；這些內容留在本機，不會上傳。
+本專案是非官方相容性專案，與 OpenAI、Work Louder 或 M5Stack 無隸屬關係。
+部分底層模組源自 MIT 授權的
+[shenjingnan/agentmote](https://github.com/shenjingnan/agentmote)；USB Audio
+元件源自 Espressif `esp-iot-solution` 並使用 Apache License 2.0。詳情請參閱
+[LICENSE](LICENSE)、[NOTICE.md](NOTICE.md) 與元件內附的授權檔。
