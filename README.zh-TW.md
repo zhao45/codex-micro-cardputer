@@ -16,6 +16,12 @@
 - 麥克風格式：單聲道、16 kHz、16-bit PCM。
 - 不包含 speaker、錄音儲存、Wi-Fi 或音訊播放。
 
+## 畫面預覽
+
+| 主頁 | 操作說明 |
+| :---: | :---: |
+| ![Cardputer 主頁](docs/images/home-screen.png) | ![Cardputer 操作說明](docs/images/key-map-screen.png) |
+
 ## 從 GitHub 下載並燒錄（Windows 11）
 
 ### 1. 安裝 ESP-IDF 5.5.2

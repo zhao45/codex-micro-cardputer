@@ -17,6 +17,12 @@ microphone is available through USB without a custom driver.
 - Mono, 16 kHz, signed 16-bit PCM microphone.
 - No speaker, recording storage, Wi-Fi, or audio playback.
 
+## Screen preview
+
+| Status screen | Key map |
+| :---: | :---: |
+| ![Cardputer status screen](docs/images/home-screen.png) | ![Cardputer key map](docs/images/key-map-screen.png) |
+
 ## Download and flash on Windows 11
 
 ### 1. Install ESP-IDF 5.5.2
