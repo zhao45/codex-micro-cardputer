@@ -20,10 +20,7 @@
 
 | 主頁 | 操作說明 |
 | :---: | :---: |
-| ![Cardputer 主頁](docs/images/home-screen.png) | ![Cardputer 操作說明](docs/images/key-map-screen.png) |
-
-> 操作說明照片拍攝於基本按鍵版本；目前韌體已加入 C、P、R、方向鍵等功能，
-> 請以本頁的「完整按鍵功能」表格為準。
+| ![Cardputer 主頁](docs/images/home-screen.jpg) | ![Cardputer 操作說明](docs/images/key-map-screen.jpg) |
 
 ## 實際操作示範
 

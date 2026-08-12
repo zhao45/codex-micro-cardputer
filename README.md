@@ -21,11 +21,7 @@ microphone is available through USB without a custom driver.
 
 | Status screen | Key map |
 | :---: | :---: |
-| ![Cardputer status screen](docs/images/home-screen.png) | ![Cardputer key map](docs/images/key-map-screen.png) |
-
-> The key-map photo shows the original basic mapping. The current firmware also
-> includes C, P, R, and directional-key controls; use the complete key table
-> below as the source of truth.
+| ![Cardputer status screen](docs/images/home-screen.jpg) | ![Cardputer key map](docs/images/key-map-screen.jpg) |
 
 ## Usage examples
 
