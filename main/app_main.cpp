@@ -24,6 +24,12 @@ static cardputer_ui_state_t s_ui;
 static bool s_mic_action_active;
 static codex_control_t *s_mic_action_control;
 
+// Codex Micro joystick angles use normalized turns, not degrees.
+static constexpr float JOYSTICK_RIGHT = 0.00f;
+static constexpr float JOYSTICK_DOWN = 0.25f;
+static constexpr float JOYSTICK_LEFT = 0.50f;
+static constexpr float JOYSTICK_UP = 0.75f;
+
 typedef enum {
     CODEX_TRANSPORT_BLE = 0,
     CODEX_TRANSPORT_USB,
@@ -85,6 +91,39 @@ static void click_action(codex_action_t action)
     }
 }
 
+static void click_raw_key(const char *key)
+{
+    codex_control_t *control = active_control();
+    codex_status_t status =
+        codex_control_send_raw_key(control, key, CODEX_ACTION_PRESS, -1);
+    if (status != CODEX_STATUS_OK) {
+        ESP_LOGW(TAG, "raw key %s not sent: %s", key, codex_status_to_string(status));
+        return;
+    }
+    vTaskDelay(pdMS_TO_TICKS(30));
+    status = codex_control_send_raw_key(control, key, CODEX_ACTION_RELEASE, -1);
+    if (status != CODEX_STATUS_OK) {
+        ESP_LOGW(TAG, "raw key %s release not sent: %s", key,
+                 codex_status_to_string(status));
+    }
+}
+
+static void click_joystick(float angle)
+{
+    codex_control_t *control = active_control();
+    codex_status_t status = codex_control_send_joystick(control, angle, 1.0f);
+    if (status != CODEX_STATUS_OK) {
+        ESP_LOGW(TAG, "joystick %.2f not sent: %s", angle,
+                 codex_status_to_string(status));
+        return;
+    }
+    vTaskDelay(pdMS_TO_TICKS(30));
+    status = codex_control_send_joystick(control, angle, 0.0f);
+    if (status != CODEX_STATUS_OK) {
+        ESP_LOGW(TAG, "joystick reset not sent: %s", codex_status_to_string(status));
+    }
+}
+
 static void click_agent(uint8_t agent)
 {
     codex_control_t *control = active_control();
@@ -100,6 +139,18 @@ static void click_agent(uint8_t agent)
     s_ui.selected_agent = agent;
     xSemaphoreGive(s_state_mutex);
     publish_ui();
+}
+
+static void cycle_agent(int direction)
+{
+    xSemaphoreTake(s_state_mutex, portMAX_DELAY);
+    const uint8_t selected = s_ui.selected_agent;
+    xSemaphoreGive(s_state_mutex);
+
+    const uint8_t next = direction < 0
+        ? static_cast<uint8_t>((selected + CODEX_AGENT_COUNT - 1) % CODEX_AGENT_COUNT)
+        : static_cast<uint8_t>((selected + 1) % CODEX_AGENT_COUNT);
+    click_agent(next);
 }
 
 static void codex_event(const codex_event_t *event, void *context)
@@ -123,7 +174,6 @@ static void codex_event(const codex_event_t *event, void *context)
             if (update.fields & CODEX_AGENT_FIELD_BRIGHTNESS) agent.brightness = update.brightness;
             if (update.fields & CODEX_AGENT_FIELD_EFFECT) {
                 memcpy(agent.effect, update.effect, sizeof(agent.effect));
-                if (strcmp(agent.effect, "breath") == 0) s_ui.selected_agent = update.id;
             }
         }
     }
@@ -134,7 +184,7 @@ static void codex_event(const codex_event_t *event, void *context)
 static esp_err_t create_codex(codex_transport_kind_t kind, codex_control_t **control)
 {
     const codex_control_config_t config = {
-        .firmware_version = "0.4.0-cardputer-adv-composite",
+        .firmware_version = "0.5.0-cardputer-adv-controls",
         .profile_index = 0,
         .layer_index = 1,
         .event_callback = codex_event,
@@ -187,6 +237,13 @@ static void controls_task(void *)
             if (pressed(down, CARDPUTER_KEY_N)) click_action(CODEX_ACTION_DECLINE);
             if (pressed(down, CARDPUTER_KEY_F)) click_action(CODEX_ACTION_FAST);
             if (pressed(down, CARDPUTER_KEY_TAB)) click_action(CODEX_ACTION_FORK);
+            if (pressed(down, CARDPUTER_KEY_C)) click_joystick(JOYSTICK_DOWN);
+            if (pressed(down, CARDPUTER_KEY_P)) click_joystick(JOYSTICK_UP);
+            if (pressed(down, CARDPUTER_KEY_R)) click_raw_key("ACT11");
+            if (pressed(down, CARDPUTER_KEY_LEFT)) click_joystick(JOYSTICK_LEFT);
+            if (pressed(down, CARDPUTER_KEY_RIGHT)) click_joystick(JOYSTICK_RIGHT);
+            if (pressed(down, CARDPUTER_KEY_UP)) cycle_agent(-1);
+            if (pressed(down, CARDPUTER_KEY_DOWN)) cycle_agent(1);
 
             if (pressed(down, CARDPUTER_KEY_M)) {
                 codex_control_t *control = active_control();
@@ -266,7 +323,8 @@ extern "C" void app_main(void)
     ESP_LOGI(TAG, "Codex Micro (Cardputer ADV) ready");
     ESP_LOGI(TAG, "Target host: %s (USB preferred, BLE fallback)", TARGET_HOST);
     ESP_LOGI(TAG, "Enter Send | M Mic hold | Y Approve | N Decline | F Fast | Tab Fork");
-    ESP_LOGI(TAG, "1-6 Agents | Space local page toggle");
+    ESP_LOGI(TAG, "C New | P Plan | R Review | Left/Right Reasoning");
+    ESP_LOGI(TAG, "1-6 Agents | Up/Down previous/next Agent | Space local page toggle");
     ESP_LOGI(TAG, "Starting Windows 11 composite USB microphone + Codex HID");
     ESP_ERROR_CHECK(cardputer_usb_mic_start());
     ESP_LOGI(TAG, "CODEX_MICRO_CARDPUTER_READY USB_COMPOSITE_READY BLE_FALLBACK_READY");

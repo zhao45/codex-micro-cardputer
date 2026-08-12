@@ -143,14 +143,20 @@ static void render_status(const cardputer_ui_state_t &state)
 static void render_key_map(void)
 {
     text(6, 5, "CODEX KEY MAP", WHITE, 2);
-    text(6, 27, "ENTER  SEND", CYAN);
-    text(6, 40, "M      MIC HOLD", CYAN);
-    text(6, 53, "Y      APPROVE", CYAN);
-    text(6, 66, "N      DECLINE", CYAN);
-    text(126, 27, "F      FAST", CYAN);
-    text(126, 40, "TAB    FORK", CYAN);
-    text(126, 53, "1-6    AGENTS", CYAN);
-    text(126, 66, "SPACE  BACK", CYAN);
+    text(6, 27, "ENTER SEND", CYAN);
+    text(6, 40, "M MIC HOLD", CYAN);
+    text(6, 53, "Y APPROVE", CYAN);
+    text(6, 66, "N DECLINE", CYAN);
+    text(6, 79, "C NEW CHAT", CYAN);
+    text(6, 92, "P PLAN MODE", CYAN);
+    text(6, 105, "R REVIEW", CYAN);
+    text(6, 118, "SPACE BACK", CYAN);
+    text(126, 27, "F FAST", CYAN);
+    text(126, 40, "TAB FORK", CYAN);
+    text(126, 53, "1-6 AGENTS", CYAN);
+    text(126, 66, "UP/DN AGENT", CYAN);
+    text(126, 79, "LEFT REASON-", CYAN);
+    text(126, 92, "RIGHT REASON+", CYAN);
 }
 
 static void display_task(void *)
