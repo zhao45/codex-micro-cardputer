@@ -59,21 +59,22 @@ this repository. End users do not need ESP-IDF, Git, or a command line.
 1. Open the
    **[Codex Micro browser installer](https://zhao45.github.io/codex-micro-cardputer/)**
    in desktop Microsoft Edge or Google Chrome.
-2. Connect a Cardputer ADV with a data-capable USB-C cable.
-3. Hold `G0`, press Reset, and release `G0` after Windows detects the download
-   port.
+2. Set the Cardputer ADV side power switch to `OFF` and disconnect USB.
+3. Hold the top-side `G0` button and connect a data-capable USB-C cable; release
+   `G0` after the device receives power.
 4. Select **Connect and install**, choose the new USB/COM device, and confirm.
-5. When installation finishes, press Reset without holding `G0`.
+5. When installation finishes, release `G0`, disconnect USB, set the side power
+   switch to `ON`, and reconnect USB without holding `G0`.
 
 How to identify and change the current mode:
 
 - **Normal mode:** the LCD shows the Codex Micro interface.
 - **Download/flash mode:** the LCD normally stays black and Windows exposes a
   new USB/COM port. The page cannot determine the mode before a port is selected.
-- **Enter flash mode:** hold `G0` → press Reset → release `G0` after Windows
-  detects the port.
-- **After flashing:** release `G0` and press Reset. This exits download mode and
-  starts the new firmware.
+- **Enter flash mode:** side power `OFF` and USB disconnected → hold the
+  top-side `G0` button → connect USB → release `G0` after power is applied.
+- **After flashing:** release `G0` and disconnect USB → set side power to `ON`
+  → reconnect USB without holding `G0` to start the new firmware.
 
 > Installing erases the firmware and settings currently stored on the device.
 > The installer accepts Cardputer ADV (ESP32-S3) only and rejects other chip
@@ -131,9 +132,9 @@ build/codex_micro_cardputer.bin
 
 ### 4. Enter download mode
 
-1. Connect the Cardputer ADV with a USB data cable.
-2. Hold `G0`, then press Reset; alternatively reconnect USB while holding `G0`.
-3. Release `G0` after Windows detects a new COM port.
+1. Set the Cardputer ADV side power switch to `OFF` and disconnect USB.
+2. Hold the top-side `G0` button and connect a USB data cable.
+3. Release `G0` after power is applied; Windows should detect a new COM port.
 4. Find the port:
 
 ```powershell
@@ -153,8 +154,8 @@ idf.py -p COM9 flash
 ```
 
 `Hash of data verified` followed by `Hard resetting via RTS pin` means the
-flash succeeded. Release `G0` and press Reset. If it remains in download mode,
-disconnect USB and reconnect it **without holding G0**.
+flash succeeded. Release `G0`, disconnect USB, set side power to `ON`, and
+reconnect USB **without holding G0**.
 
 The serial COM port may disappear after a normal boot because USB changes into
 the Codex HID + microphone composite device. This is expected.
@@ -247,7 +248,8 @@ After setup, verify:
 ### No COM port
 
 - Use a USB data cable, not a charge-only cable.
-- Retry while holding `G0` and pressing Reset or reconnecting USB.
+- Retry: side power `OFF`, disconnect USB, hold the top-side `G0`, connect USB,
+  then release `G0` after power is applied.
 - Check **Ports (COM & LPT)** in Windows Device Manager.
 
 ### `Access denied` or busy COM port
@@ -257,8 +259,8 @@ port, then retry.
 
 ### Flash succeeds but the LCD remains off
 
-The device is usually still in G0 download mode. Release `G0`, press Reset, or
-reconnect USB without holding G0.
+The device is usually still in G0 download mode. Release `G0`, disconnect USB,
+set side power to `ON`, and reconnect USB without holding `G0`.
 
 ### Windows cannot find the microphone
 

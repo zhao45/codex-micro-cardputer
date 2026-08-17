@@ -57,20 +57,21 @@
 
 1. 使用桌面版 Microsoft Edge 或 Google Chrome 開啟
    **[Codex Micro 網頁燒錄器](https://zhao45.github.io/codex-micro-cardputer/)**。
-2. 使用可傳輸資料的 USB-C 線連接 Cardputer ADV。
-3. 按住 `G0`，按一下 Reset；Windows 偵測到下載連接埠後放開 `G0`。
+2. 將 Cardputer ADV 側邊電源切到 `OFF`，並拔除 USB。
+3. 按住機頂 `G0`，插入可傳輸資料的 USB-C 線；裝置通電後放開 `G0`。
 4. 按下「連接並安裝」，選擇新出現的 USB／COM 裝置並確認。
-5. 安裝完成後，在不按 `G0` 的情況下按一下 Reset。
+5. 安裝完成後放開 `G0`、拔除 USB、將側邊電源切到 `ON`，再於不按
+   `G0` 的情況下插入 USB。
 
 如何判斷目前模式：
 
 - **正常模式：** LCD 會顯示 Codex Micro 操作畫面。
 - **下載／燒錄模式：** LCD 通常維持黑畫面，Windows 會出現新的 USB／COM
   連接埠。網頁在選取連接埠之前無法自動判斷模式。
-- **切換到燒錄模式：** 按住 `G0` → 按一下 Reset → Windows 偵測到連接埠後
-  放開 `G0`。
-- **燒錄完成：** 必須放開 `G0` 再按一下 Reset，裝置才會退出下載模式並啟動
-  新韌體。
+- **切換到燒錄模式：** 側邊電源 `OFF` 並拔除 USB → 按住機頂 `G0` → 插入
+  USB → 裝置通電後放開 `G0`。
+- **燒錄完成：** 放開 `G0` 並拔除 USB → 側邊電源切到 `ON` → 不按 `G0`
+  重新插入 USB，裝置就會啟動新韌體。
 
 > 安裝會清除裝置目前的韌體與設定。燒錄器只接受 Cardputer ADV
 >（ESP32-S3），連接其他晶片系列時不會提供此韌體。
@@ -124,9 +125,9 @@ build/codex_micro_cardputer.bin
 
 ### 4. 讓 Cardputer 進入下載模式
 
-1. 使用可傳輸資料的 USB 線連接 Cardputer ADV。
-2. 按住 `G0`，再按一下 Reset；也可以按住 `G0` 時重新插入 USB。
-3. Windows 出現新的 COM 後放開 `G0`。
+1. 將 Cardputer ADV 側邊電源切到 `OFF`，並拔除 USB。
+2. 按住機頂 `G0`，插入可傳輸資料的 USB 線。
+3. 裝置通電後放開 `G0`；Windows 應出現新的 COM。
 4. 執行下列指令找出連接埠：
 
 ```powershell
@@ -146,8 +147,8 @@ idf.py -p COM9 flash
 ```
 
 看到 `Hash of data verified` 與 `Hard resetting via RTS pin` 表示燒錄成功。
-燒錄後請放開 `G0`，按一下 Reset；若仍停在下載模式，拔掉 USB 後在**不按
-G0** 的情況下重新插入。
+燒錄後請放開 `G0`、拔除 USB、將側邊電源切到 `ON`，再於**不按 G0** 的
+情況下重新插入。
 
 韌體正常啟動後，燒錄用的 COM 可能消失，因為 USB 已切換成 Codex HID＋
 麥克風複合裝置，這是正常現象。
@@ -235,7 +236,7 @@ P 對應的 Analog Up 是 Codex Micro 預設 Plan Mode，但仍建議核對其�
 ### 找不到 COM
 
 - 確認使用的是 USB 資料線，不是只能充電的線。
-- 重新執行「按住 G0 → Reset／插入 USB」。
+- 重新執行「側邊電源 OFF 並拔除 USB → 按住機頂 G0 → 插入 USB → 放開 G0」。
 - 到 Windows 裝置管理員查看「連接埠（COM 和 LPT）」。
 
 ### 顯示 `Access denied` 或 COM 被占用
@@ -244,8 +245,8 @@ P 對應的 Analog Up 是 Codex Micro 預設 Plan Mode，但仍建議核對其�
 
 ### 燒錄成功但畫面沒亮
 
-裝置通常仍停在 G0 download mode。放開 `G0`，按 Reset，或不按 G0 重新插入
-USB。
+裝置通常仍停在 G0 download mode。放開 `G0`、拔除 USB、將側邊電源切到
+`ON`，再於不按 G0 的情況下重新插入 USB。
 
 ### Windows 找不到麥克風
 
