@@ -65,6 +65,16 @@ this repository. End users do not need ESP-IDF, Git, or a command line.
 4. Select **Connect and install**, choose the new USB/COM device, and confirm.
 5. When installation finishes, press Reset without holding `G0`.
 
+How to identify and change the current mode:
+
+- **Normal mode:** the LCD shows the Codex Micro interface.
+- **Download/flash mode:** the LCD normally stays black and Windows exposes a
+  new USB/COM port. The page cannot determine the mode before a port is selected.
+- **Enter flash mode:** hold `G0` → press Reset → release `G0` after Windows
+  detects the port.
+- **After flashing:** release `G0` and press Reset. This exits download mode and
+  starts the new firmware.
+
 > Installing erases the firmware and settings currently stored on the device.
 > The installer accepts Cardputer ADV (ESP32-S3) only and rejects other chip
 > families.
