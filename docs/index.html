@@ -43,31 +43,56 @@
       <main>
         <section class="hero">
           <div class="hero-copy">
-            <p class="eyebrow">M5STACK CARDPUTER ADV · WINDOWS 11</p>
-            <h1>插上 USB，<br />直接安裝 Codex Micro。</h1>
+            <p class="eyebrow">CARDPUTER ADV × CODEX · WINDOWS 11</p>
+            <h1>
+              <span>Cardputer ADV</span>
+              <span>成為你的</span>
+              <strong>Codex 控制台。</strong>
+            </h1>
             <p class="lead">
-              不用安裝 ESP-IDF，也不用輸入燒錄指令。使用桌面版 Edge 或
-              Chrome，就能將 Cardputer ADV 變成 Codex 控制器與 USB 麥克風。
+              一條 USB-C 線、一次瀏覽器安裝。立即獲得實體按鍵控制、內建麥克風與
+              BLE 無線備援，不需要 ESP-IDF 或命令列。
             </p>
 
             <div class="feature-row" aria-label="主要功能">
-              <span>USB 按鍵</span>
-              <span>USB 麥克風</span>
-              <span>BLE 備援</span>
+              <span><b>01</b>USB 按鍵控制</span>
+              <span><b>02</b>內建麥克風</span>
+              <span><b>03</b>BLE 無線備援</span>
+            </div>
+          </div>
+
+          <div class="hero-device">
+            <div class="device-toolbar">
+              <span>LIVE DEVICE PREVIEW</span>
+              <span class="device-status"><i aria-hidden="true"></i>ADV READY</span>
+            </div>
+            <figure class="device-preview">
+              <div class="screen-grid" aria-hidden="true"></div>
+              <img
+                src="./images/home-screen.jpg"
+                alt="正在執行 Codex Micro 的 M5Stack Cardputer ADV"
+              />
+            </figure>
+            <div class="device-specs" aria-label="連接功能">
+              <span>USB HID</span>
+              <span>UAC 2.0</span>
+              <span>BLE</span>
+            </div>
+          </div>
+
+          <div class="installer-card">
+            <div class="installer-heading">
+              <div>
+                <p class="installer-label">WEB INSTALLER · VERSION 1.0.0</p>
+                <h2>準備好 Cardputer，現在直接安裝。</h2>
+              </div>
+              <span class="ready-pill"><i aria-hidden="true"></i>韌體已就緒</span>
             </div>
 
-            <div class="installer-card">
-              <div class="installer-heading">
-                <div>
-                  <p class="installer-label">WEB INSTALLER</p>
-                  <h2>Codex Micro 1.0.0</h2>
-                </div>
-                <span class="ready-pill"><i aria-hidden="true"></i>準備就緒</span>
-              </div>
-
+            <div class="installer-action">
               <esp-web-install-button manifest="./manifest.json">
                 <button class="install-button" slot="activate" type="button">
-                  連接並安裝
+                  連接 Cardputer 並安裝
                 </button>
                 <p class="browser-message" slot="unsupported">
                   此瀏覽器不支援網頁燒錄。請改用 Windows 桌面版 Microsoft Edge
@@ -77,22 +102,13 @@
                   網頁燒錄需要 HTTPS。請從正式 GitHub Pages 網址開啟本頁。
                 </p>
               </esp-web-install-button>
-
-              <p class="erase-note">
-                安裝會清除 Cardputer ADV 目前的韌體與設定。僅支援 ADV
-                （StampS3A／ESP32-S3），不支援原版 Cardputer。
-              </p>
             </div>
-          </div>
 
-          <figure class="device-preview">
-            <div class="screen-grid" aria-hidden="true"></div>
-            <img
-              src="./images/home-screen.jpg"
-              alt="正在執行 Codex Micro 的 M5Stack Cardputer ADV"
-            />
-            <figcaption>USB HID · UAC 2.0 · BLE</figcaption>
-          </figure>
+            <p class="erase-note">
+              安裝會清除 Cardputer ADV 目前的韌體與設定。僅支援 ADV
+              （StampS3A／ESP32-S3），不支援原版 Cardputer。
+            </p>
+          </div>
         </section>
 
         <section class="steps" aria-labelledby="steps-title">
