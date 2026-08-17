@@ -25,10 +25,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build ESP-IDF firmware
-        run: idf.py build
+        shell: bash
+        run: |
+          . /opt/esp/idf/export.sh
+          idf.py build
 
       - name: Package merged web-installer image
-        run: python tools/package_web_firmware.py
+        shell: bash
+        run: |
+          . /opt/esp/idf/export.sh
+          python tools/package_web_firmware.py
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
