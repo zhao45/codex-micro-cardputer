@@ -9,6 +9,9 @@ microphone is available through USB without a custom driver.
 > Cardputer **ADV (StampS3A / ESP32-S3)** only. The original Cardputer is not
 > supported.
 
+**[Open the browser installer](https://zhao45.github.io/codex-micro-cardputer/)**
+— no ESP-IDF installation or command line required.
+
 ## Features
 
 - USB Codex controls and Cardputer ADV internal microphone.
@@ -45,10 +48,28 @@ microphone is available through USB without a custom driver.
 - M5Stack Cardputer ADV (StampS3A / ESP32-S3).
 - A data-capable USB-C cable.
 - A Windows 11 PC with the Codex desktop app.
-- ESP-IDF v5.5.2, Git, and internet access for building and flashing.
+- ESP-IDF v5.5.2, Git, and internet access only when building manually.
 - Bluetooth Low Energy support on Windows for wireless controls.
 
-## Download and flash on Windows 11
+## Browser install (recommended)
+
+The browser installer builds and publishes the complete firmware image from
+this repository. End users do not need ESP-IDF, Git, or a command line.
+
+1. Open the
+   **[Codex Micro browser installer](https://zhao45.github.io/codex-micro-cardputer/)**
+   in desktop Microsoft Edge or Google Chrome.
+2. Connect a Cardputer ADV with a data-capable USB-C cable.
+3. Hold `G0`, press Reset, and release `G0` after Windows detects the download
+   port.
+4. Select **Connect and install**, choose the new USB/COM device, and confirm.
+5. When installation finishes, press Reset without holding `G0`.
+
+> Installing erases the firmware and settings currently stored on the device.
+> The installer accepts Cardputer ADV (ESP32-S3) only and rejects other chip
+> families.
+
+## Build and flash manually on Windows 11
 
 ### 1. Install ESP-IDF 5.5.2
 

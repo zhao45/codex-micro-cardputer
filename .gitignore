@@ -46,6 +46,8 @@ build-*/
 managed_components/
 sdkconfig
 sdkconfig.old
+docs/firmware/*.bin
+!docs/firmware/.gitkeep
 .vscode/
 .idea/
 

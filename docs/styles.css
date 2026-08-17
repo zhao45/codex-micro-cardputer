@@ -1,0 +1,477 @@
+:root {
+  color-scheme: dark;
+  --bg: #050a0f;
+  --panel: #0b141d;
+  --panel-strong: #101c27;
+  --line: rgba(160, 197, 219, 0.18);
+  --text: #f3f8fb;
+  --muted: #9fb1bd;
+  --blue: #2fa8ff;
+  --cyan: #67e1ff;
+  --green: #8be27c;
+  --orange: #ffb45f;
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 82% 14%, rgba(30, 117, 174, 0.2), transparent 32rem),
+    radial-gradient(circle at 10% 38%, rgba(52, 225, 255, 0.07), transparent 28rem),
+    var(--bg);
+}
+
+a {
+  color: inherit;
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 84px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--text);
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--blue);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 2px;
+}
+
+.source-link {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.source-link:hover,
+.source-link:focus-visible,
+footer a:hover,
+footer a:focus-visible {
+  color: var(--cyan);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+  gap: clamp(48px, 8vw, 104px);
+  align-items: center;
+  min-height: calc(100vh - 84px);
+  padding: 76px 0 88px;
+}
+
+.eyebrow,
+.installer-label {
+  margin: 0 0 18px;
+  color: var(--cyan);
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 760px;
+  margin-bottom: 26px;
+  font-size: clamp(3.2rem, 7vw, 6.35rem);
+  line-height: 0.96;
+  letter-spacing: -0.065em;
+}
+
+.lead {
+  max-width: 670px;
+  margin-bottom: 26px;
+  color: var(--muted);
+  font-size: clamp(1.02rem, 1.7vw, 1.22rem);
+  line-height: 1.8;
+}
+
+.feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.feature-row span {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: #c4d4de;
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.82rem;
+}
+
+.installer-card {
+  max-width: 650px;
+  padding: 26px;
+  border: 1px solid rgba(89, 187, 244, 0.28);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(16, 31, 43, 0.96), rgba(8, 17, 25, 0.96));
+  box-shadow: var(--shadow);
+}
+
+.installer-heading {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.installer-label {
+  margin-bottom: 7px;
+}
+
+.installer-heading h2 {
+  margin-bottom: 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.ready-pill {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  color: #b9eeb2;
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.ready-pill i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 14px rgba(139, 226, 124, 0.75);
+}
+
+esp-web-install-button {
+  display: block;
+  --esp-tools-button-color: var(--blue);
+  --esp-tools-button-text-color: #04101a;
+  --esp-tools-button-border-radius: 13px;
+}
+
+.install-button {
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  border-radius: 13px;
+  color: #031019;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  box-shadow: 0 14px 38px rgba(47, 168, 255, 0.22);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.install-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 44px rgba(47, 168, 255, 0.34);
+}
+
+.install-button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(103, 225, 255, 0.65);
+  outline-offset: 4px;
+}
+
+.browser-message,
+.erase-note {
+  margin: 14px 0 0;
+  color: #cbd7df;
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.erase-note {
+  color: #d7b88d;
+}
+
+.device-preview {
+  position: relative;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: rgba(10, 20, 28, 0.72);
+  box-shadow: var(--shadow);
+  transform: rotate(1.2deg);
+  overflow: hidden;
+}
+
+.device-preview::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(47, 168, 255, 0.12), transparent 48%);
+  content: "";
+}
+
+.device-preview img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+  filter: contrast(1.02) saturate(0.92);
+}
+
+.device-preview figcaption {
+  position: relative;
+  z-index: 1;
+  padding: 15px 4px 1px;
+  color: var(--muted);
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.73rem;
+  letter-spacing: 0.15em;
+  text-align: right;
+}
+
+.steps {
+  padding: 100px 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 44px;
+}
+
+.section-heading .eyebrow,
+.after-install .eyebrow {
+  margin-bottom: 10px;
+}
+
+.section-heading h2,
+.after-install h2 {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  letter-spacing: -0.045em;
+}
+
+.step-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--line);
+  list-style: none;
+  overflow: hidden;
+}
+
+.step-grid li {
+  min-height: 250px;
+  padding: 28px;
+  background: var(--panel);
+}
+
+.step-number {
+  display: block;
+  margin-bottom: 64px;
+  color: var(--blue);
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+.step-grid h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.step-grid p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.after-install {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 80px;
+  padding: 100px 0;
+  border-top: 1px solid var(--line);
+}
+
+.after-copy {
+  align-self: end;
+}
+
+.after-copy p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.after-copy strong {
+  color: var(--text);
+}
+
+.after-copy a {
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 0 44px;
+  border-top: 1px solid var(--line);
+  color: #71838f;
+  font-size: 0.78rem;
+}
+
+footer a {
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 62px;
+  }
+
+  .device-preview {
+    width: min(680px, 100%);
+    transform: none;
+  }
+
+  .step-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .after-install {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+}
+
+@media (max-width: 560px) {
+  .page-shell {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .site-header {
+    min-height: 70px;
+  }
+
+  .source-link {
+    font-size: 0.78rem;
+  }
+
+  .hero {
+    gap: 48px;
+    padding: 52px 0 70px;
+  }
+
+  h1 {
+    font-size: clamp(2.85rem, 15vw, 4.25rem);
+  }
+
+  .installer-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .installer-heading {
+    display: block;
+  }
+
+  .ready-pill {
+    margin-top: 10px;
+  }
+
+  .device-preview {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .device-preview img {
+    border-radius: 12px;
+  }
+
+  .steps,
+  .after-install {
+    padding: 72px 0;
+  }
+
+  .step-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .step-grid li {
+    min-height: auto;
+  }
+
+  .step-number {
+    margin-bottom: 34px;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .install-button {
+    transition: none;
+  }
+}

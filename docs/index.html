@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071019" />
+    <meta
+      name="description"
+      content="免安裝 ESP-IDF，直接從瀏覽器將 Codex Micro 燒錄到 M5Stack Cardputer ADV。"
+    />
+    <meta property="og:title" content="Codex Micro — Cardputer ADV 網頁燒錄器" />
+    <meta
+      property="og:description"
+      content="使用 Edge 或 Chrome，透過 USB 一鍵安裝 Codex 控制器與麥克風韌體。"
+    />
+    <meta
+      property="og:image"
+      content="https://zhao45.github.io/codex-micro-cardputer/images/home-screen.jpg"
+    />
+    <title>Codex Micro — Cardputer ADV 網頁燒錄器</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script
+      type="module"
+      src="https://unpkg.com/esp-web-tools@10.1.1/dist/web/install-button.js?module"
+    ></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="Codex Micro 首頁">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>CODEX MICRO</span>
+        </a>
+        <a
+          class="source-link"
+          href="https://github.com/zhao45/codex-micro-cardputer"
+          rel="noreferrer"
+        >
+          GitHub 原始碼
+        </a>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">M5STACK CARDPUTER ADV · WINDOWS 11</p>
+            <h1>插上 USB，<br />直接安裝 Codex Micro。</h1>
+            <p class="lead">
+              不用安裝 ESP-IDF，也不用輸入燒錄指令。使用桌面版 Edge 或
+              Chrome，就能將 Cardputer ADV 變成 Codex 控制器與 USB 麥克風。
+            </p>
+
+            <div class="feature-row" aria-label="主要功能">
+              <span>USB 按鍵</span>
+              <span>USB 麥克風</span>
+              <span>BLE 備援</span>
+            </div>
+
+            <div class="installer-card">
+              <div class="installer-heading">
+                <div>
+                  <p class="installer-label">WEB INSTALLER</p>
+                  <h2>Codex Micro 1.0.0</h2>
+                </div>
+                <span class="ready-pill"><i aria-hidden="true"></i>準備就緒</span>
+              </div>
+
+              <esp-web-install-button manifest="./manifest.json">
+                <button class="install-button" slot="activate" type="button">
+                  連接並安裝
+                </button>
+                <p class="browser-message" slot="unsupported">
+                  此瀏覽器不支援網頁燒錄。請改用 Windows 桌面版 Microsoft Edge
+                  或 Google Chrome。
+                </p>
+                <p class="browser-message" slot="not-allowed">
+                  網頁燒錄需要 HTTPS。請從正式 GitHub Pages 網址開啟本頁。
+                </p>
+              </esp-web-install-button>
+
+              <p class="erase-note">
+                安裝會清除 Cardputer ADV 目前的韌體與設定。僅支援 ADV
+                （StampS3A／ESP32-S3），不支援原版 Cardputer。
+              </p>
+            </div>
+          </div>
+
+          <figure class="device-preview">
+            <div class="screen-grid" aria-hidden="true"></div>
+            <img
+              src="./images/home-screen.jpg"
+              alt="正在執行 Codex Micro 的 M5Stack Cardputer ADV"
+            />
+            <figcaption>USB HID · UAC 2.0 · BLE</figcaption>
+          </figure>
+        </section>
+
+        <section class="steps" aria-labelledby="steps-title">
+          <div class="section-heading">
+            <p class="eyebrow">INSTALL IN FOUR STEPS</p>
+            <h2 id="steps-title">四個步驟完成燒錄</h2>
+          </div>
+
+          <ol class="step-grid">
+            <li>
+              <span class="step-number">01</span>
+              <h3>確認硬體</h3>
+              <p>只使用 M5Stack Cardputer ADV 與可傳輸資料的 USB-C 線。</p>
+            </li>
+            <li>
+              <span class="step-number">02</span>
+              <h3>進入下載模式</h3>
+              <p>按住 G0，再按一下 Reset；Windows 偵測到連接埠後放開 G0。</p>
+            </li>
+            <li>
+              <span class="step-number">03</span>
+              <h3>開始安裝</h3>
+              <p>按「連接並安裝」，選擇新出現的 USB／COM 裝置並確認安裝。</p>
+            </li>
+            <li>
+              <span class="step-number">04</span>
+              <h3>重新啟動</h3>
+              <p>完成後不要按 G0，按一下 Reset；LCD 亮起即代表安裝成功。</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="after-install" aria-labelledby="after-title">
+          <div>
+            <p class="eyebrow">AFTER INSTALL</p>
+            <h2 id="after-title">接上 Codex，立即使用。</h2>
+          </div>
+          <div class="after-copy">
+            <p>
+              USB 連接時，Windows 11 會看到 Codex 控制介面與
+              <strong>Cardputer ADV Microphone</strong>。需要無線控制時，可在藍牙設定配對
+              <strong>Codex Micro</strong>。
+            </p>
+            <a
+              href="https://github.com/zhao45/codex-micro-cardputer/blob/main/README.zh-TW.md"
+            >
+              查看完整按鍵與測試說明 →
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>Codex Micro for Cardputer ADV</span>
+        <span>
+          <a href="https://github.com/zhao45/codex-micro-cardputer/blob/main/LICENSE">License</a>
+          ·
+          <a href="https://github.com/zhao45/codex-micro-cardputer/blob/main/NOTICE.md">Notice</a>
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>

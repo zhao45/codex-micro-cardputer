@@ -8,6 +8,9 @@
 
 > 僅支援 Cardputer **ADV（StampS3A／ESP32-S3）**，不支援原版 Cardputer。
 
+**[開啟網頁燒錄器](https://zhao45.github.io/codex-micro-cardputer/)**
+— 不需要安裝 ESP-IDF，也不需要輸入指令。
+
 ## 功能
 
 - USB：Codex 按鍵控制＋Cardputer ADV 內建麥克風。
@@ -44,10 +47,25 @@
 - M5Stack Cardputer ADV（StampS3A／ESP32-S3）。
 - 一條可傳輸資料的 USB-C 線。
 - Windows 11 電腦與 Codex 桌面版。
-- 編譯與燒錄時需要 ESP-IDF v5.5.2、Git，以及可用的網路連線。
+- 只有手動編譯時需要 ESP-IDF v5.5.2、Git，以及可用的網路連線。
 - 如需無線控制，Windows 必須支援 Bluetooth Low Energy。
 
-## 從 GitHub 下載並燒錄（Windows 11）
+## 網頁直接安裝（推薦）
+
+網頁燒錄器會使用這個 repository 的原始碼自動建置並發布完整韌體。一般
+使用者不需要安裝 ESP-IDF、Git 或使用命令列。
+
+1. 使用桌面版 Microsoft Edge 或 Google Chrome 開啟
+   **[Codex Micro 網頁燒錄器](https://zhao45.github.io/codex-micro-cardputer/)**。
+2. 使用可傳輸資料的 USB-C 線連接 Cardputer ADV。
+3. 按住 `G0`，按一下 Reset；Windows 偵測到下載連接埠後放開 `G0`。
+4. 按下「連接並安裝」，選擇新出現的 USB／COM 裝置並確認。
+5. 安裝完成後，在不按 `G0` 的情況下按一下 Reset。
+
+> 安裝會清除裝置目前的韌體與設定。燒錄器只接受 Cardputer ADV
+>（ESP32-S3），連接其他晶片系列時不會提供此韌體。
+
+## 從 GitHub 手動編譯並燒錄（Windows 11）
 
 ### 1. 安裝 ESP-IDF 5.5.2
 
